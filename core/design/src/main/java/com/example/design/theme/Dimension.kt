@@ -9,6 +9,7 @@ data class AppDimensions(
     val spacingMedium: Dp = 8.dp,
     val spacingLarge: Dp = 16.dp,
     val spacingExtraLarge: Dp = 24.dp,
+    val spacingExtraExtraLarge: Dp = 32.dp,
 
     val buttonHeight: Dp = 48.dp,
     val textFieldHeight: Dp = 56.dp,

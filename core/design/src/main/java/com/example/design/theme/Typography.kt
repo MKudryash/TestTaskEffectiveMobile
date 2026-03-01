@@ -41,7 +41,7 @@ data class AppTypography(
         fontWeight = FontWeight.SemiBold,
         fontFamily = robotoFamily,
         letterSpacing = 0.4.sp,
-        lineHeight = 16.sp
+        lineHeight = 15.sp
     ),
     val caption: TextStyle = TextStyle(
         fontSize = 12.sp,

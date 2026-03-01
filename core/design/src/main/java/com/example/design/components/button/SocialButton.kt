@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import com.example.design.theme.LocalAppDimensions
+import com.example.design.theme.LocalAppShapes
 import java.nio.file.Files.size
 
 enum class SocialButtonType {
@@ -28,9 +29,9 @@ fun SocialButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = RoundedCornerShape(LocalAppDimensions.current.cornerRadius)
 ) {
     val dimensions = LocalAppDimensions.current
+    val shape = LocalAppShapes.current
 
     val backgroundColor = when (type) {
         SocialButtonType.VK -> Color(0xFF2683ED)
@@ -46,26 +47,29 @@ fun SocialButton(
         )
     } else null
 
+
     Button(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
             .height(dimensions.buttonHeight)
-            .clip(shape),
+            .clip(shape.buttonShape)
+            .then(
+                if (backgroundBrush != null) {
+                    Modifier.background(brush = backgroundBrush, shape = shape.buttonShape)
+                } else Modifier
+            )
+,
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor
         ),
+
         enabled = enabled
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .then(
-                    if (backgroundBrush != null) {
-                        Modifier.background(brush = backgroundBrush, shape = shape)
-                    } else Modifier
-                ),
-            contentAlignment = Alignment.Center
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 painter = icon,

@@ -9,6 +9,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.*
 import com.example.design.theme.LocalAppColors
 import com.example.design.theme.LocalAppDimensions
+import com.example.design.theme.LocalAppShapes
 import com.example.design.theme.LocalAppTypography
 
 @Composable
@@ -19,24 +20,24 @@ fun AppButton(
     modifier: Modifier = Modifier,
     containerColor: Color = LocalAppColors.current.primary,
     contentColor: Color = Color.White,
-    shape: Shape = RoundedCornerShape(LocalAppDimensions.current.cornerRadius)
 ) {
     val dimensions = LocalAppDimensions.current
     val typography = LocalAppTypography.current
+    val shape = LocalAppShapes.current
 
     Button(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
             .height(dimensions.buttonHeight)
-            .clip(shape),
+            .clip(shape.buttonShape),
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
             disabledContainerColor = containerColor.copy(alpha = 0.3f),
             contentColor = contentColor
         ),
         enabled = enabled,
-        shape = shape
+        shape = shape.buttonShape
     ) {
         Text(
             text = text,
