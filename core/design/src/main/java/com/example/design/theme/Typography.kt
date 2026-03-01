@@ -9,7 +9,10 @@ import androidx.compose.ui.unit.sp
 import com.example.design.R
 
 val robotoFamily = FontFamily(
-
+    Font(R.font.roboto, FontWeight.Normal),
+    Font(R.font.roboto_medium, FontWeight.Medium),
+    Font(R.font.roboto_regular, FontWeight.Normal),
+    Font(R.font.roboto_bold, FontWeight.SemiBold),
 )
 data class AppTypography(
     val labelLarge: TextStyle = TextStyle(

@@ -46,5 +46,4 @@ val DarkColorPalette = AppColors(
     favoriteActive = PrimaryGreen,
     divider = Color(0xFF4D555E)
 )
-
 val LocalAppColors = compositionLocalOf { DarkColorPalette }

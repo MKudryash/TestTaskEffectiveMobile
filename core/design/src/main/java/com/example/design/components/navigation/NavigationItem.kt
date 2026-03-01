@@ -1,7 +1,6 @@
 package com.example.design.components.navigation
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -35,7 +35,7 @@ fun NavigationItem(
     item: NavItem,
     selected: Boolean,
     onClick: () -> Unit,
-    icon: Painter, // Иконка приходит извне, чтобы не зависеть от ресурсов
+    icon: Painter,
     modifier: Modifier = Modifier
 ) {
     val colors = LocalAppColors.current
@@ -43,12 +43,12 @@ fun NavigationItem(
 
     val backgroundColor by animateColorAsState(
         targetValue = if (selected) colors.surface else Color.Transparent,
-        animationSpec = tween(durationMillis = 600)
+        animationSpec = tween(durationMillis = 300)
     )
 
     val contentColor by animateColorAsState(
-        targetValue = if (selected) colors.primary else colors.textPrimary,
-        animationSpec = tween(durationMillis = 600)
+        targetValue = if (selected) colors.primary else colors.textSecondary,
+        animationSpec = tween(durationMillis = 300)
     )
 
     Column(
@@ -60,14 +60,12 @@ fun NavigationItem(
                 indication = null,
                 interactionSource = interactionSource
             ) { onClick() }
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = 4.dp)
     ) {
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(50))
                 .background(backgroundColor)
-                .animateContentSize()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
             Icon(
                 painter = icon,
@@ -76,7 +74,9 @@ fun NavigationItem(
                 modifier = Modifier.Companion.size(64.dp, 32.dp)
             )
         }
+
         Spacer(modifier = Modifier.height(4.dp))
+
         Text(
             text = item.title,
             fontSize = 12.sp,

@@ -1,7 +1,9 @@
 package com.example.testtaskeffectivemobile
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -13,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.design.components.navigation.BottomNavigationBar
+import com.example.design.theme.AppTheme
 import com.example.navigation.MainViewModel
 import com.example.navigation.NavItem
 import com.example.navigation.Screen
@@ -27,67 +30,86 @@ fun AppNavHost(
 
     val selectedItem by viewModel.selectedItem.collectAsState()
     val shouldShowBottomBar by viewModel.shouldShowBottomBar.collectAsState()
+    val isNavigating by viewModel.isNavigating.collectAsState()
 
-    // Update ViewModel with current route
-    LaunchedEffect(currentRoute) {
-        viewModel.updateNavigationState(currentRoute)
+    LaunchedEffect(currentRoute, isNavigating) {
+        if (!isNavigating) {
+            viewModel.updateNavigationState(currentRoute)
+        }
     }
-
-    Scaffold(
-        bottomBar = {
-            if (shouldShowBottomBar && selectedItem != null) {
-                BottomNavigationBar(
-                    selectedItem = selectedItem!!,
-                    onItemSelected = { item ->
-                        viewModel.onNavItemSelected(item) { navItem ->
-                            when (navItem) {
-                                NavItem.Main -> navController.navigate(Screen.Main.route) {
-                                    popUpTo(Screen.Main.route) { inclusive = true }
-                                }
-                                NavItem.Favorite -> navController.navigate(Screen.Favorite.route) {
-                                    popUpTo(Screen.Main.route) { inclusive = true }
-                                }
-                                NavItem.Account -> navController.navigate(Screen.Account.route) {
-                                    popUpTo(Screen.Main.route) { inclusive = true }
+    print(selectedItem)
+    AppTheme {
+        Scaffold(
+            bottomBar = {
+                if (shouldShowBottomBar) {
+                    BottomNavigationBar(
+                        selectedItem = selectedItem,
+                        onItemSelected = { item ->
+                            if (selectedItem != item && !isNavigating) {
+                                viewModel.onNavItemSelected(item) { navItem ->
+                                    when (navItem) {
+                                        NavItem.Main -> {
+                                            navController.navigate(Screen.Main.route) {
+                                                popUpTo(Screen.Main.route) { inclusive = true }
+                                                launchSingleTop = true
+                                            }
+                                        }
+                                        NavItem.Favorite -> {
+                                            navController.navigate(Screen.Favorite.route) {
+                                                popUpTo(Screen.Main.route)
+                                                launchSingleTop = true
+                                            }
+                                        }
+                                        NavItem.Account -> {
+                                            navController.navigate(Screen.Account.route) {
+                                                popUpTo(Screen.Main.route)
+                                                launchSingleTop = true
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
-                )
+                    )
+                }
             }
-        }
-    ) { paddingValues ->
-        NavHost(
-            navController = navController,
-            startDestination = Screen.Main.route,
-            modifier = Modifier.padding(paddingValues)
-        ) {
-            composable(Screen.Auth.route) { AuthScreen() }
-            composable(Screen.Main.route) { MainScreen() }
-            composable(Screen.Favorite.route) { FavoriteScreen() }
-            composable(Screen.Account.route) { AccountScreen() }
+        ) { paddingValues ->
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = AppTheme.colors.background
+            ) {
+                NavHost(
+                    navController = navController,
+                    startDestination = Screen.Main.route,
+                    modifier = Modifier.padding(paddingValues)
+                ) {
+                    composable(Screen.Auth.route) { AuthScreen() }
+                    composable(Screen.Main.route) { MainScreen() }
+                    composable(Screen.Favorite.route) { FavoriteScreen() }
+                    composable(Screen.Account.route) { AccountScreen() }
+                }
+            }
         }
     }
 }
 
+// Placeholder screens
 @Composable
 fun AccountScreen() {
-
+    // Content
 }
 
 @Composable
 fun FavoriteScreen() {
-
+    // Content
 }
 
 @Composable
 fun MainScreen() {
-
+    // Content
 }
 
 @Composable
 fun AuthScreen() {
-
+    // Content
 }
-
-
