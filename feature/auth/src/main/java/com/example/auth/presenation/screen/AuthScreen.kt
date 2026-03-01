@@ -187,7 +187,7 @@ fun AuthContent(
                 enabled = email.isNotEmpty() && password.isNotEmpty() && isValidEmail(email) && password.length >= 6
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(dimensions.spacingLarge))
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
         ){
@@ -218,16 +218,15 @@ fun AuthContent(
                     .padding(top = 8.dp)
             )
         }
-        Spacer(Modifier.height(dimensions.spacingExtraLarge))
+        Spacer(Modifier.height(dimensions.spacingExtraExtraLarge))
         Divider(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
                 .height(1.dp),
             color = Color(0xFF4D555E),
             thickness = 1.dp
         )
-        Spacer(Modifier.height(dimensions.spacingExtraLarge))
+        Spacer(Modifier.height(dimensions.spacingExtraExtraLarge))
 
         OtherAuthForm(snackbarHostState = snackbarHostState)
     }

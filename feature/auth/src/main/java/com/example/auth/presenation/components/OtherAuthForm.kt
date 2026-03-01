@@ -20,6 +20,7 @@ import com.example.design.components.button.SocialButton
 import com.example.design.components.button.SocialButtonType
 import kotlinx.coroutines.launch
 import com.example.core.util.openUrlSafely
+import com.example.design.theme.LocalAppDimensions
 
 @Composable
 fun OtherAuthForm(
@@ -28,6 +29,7 @@ fun OtherAuthForm(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    val dimensions = LocalAppDimensions.current
 
     val handleUrlOpen = { url: String ->
         val result = context.openUrlSafely(url)
@@ -46,8 +48,7 @@ fun OtherAuthForm(
 
     Row(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
