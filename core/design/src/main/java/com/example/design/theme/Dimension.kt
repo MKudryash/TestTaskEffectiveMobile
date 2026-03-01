@@ -15,6 +15,7 @@ data class AppDimensions(
     val textFieldHeight: Dp = 56.dp,
     val iconSize: Dp = 24.dp,
     val cornerRadius: Dp = 12.dp,
+    val cornerRadiusIcon: Dp = 30.dp,
 
     val cardHeight: Dp = 236.dp,
     val cardImageHeight: Dp = 118.dp

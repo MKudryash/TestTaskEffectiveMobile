@@ -24,7 +24,7 @@ fun CourseCard(
     title: String,
     description: String,
     price: Int,
-    rating: Double = 4.9,
+    rating: Double? = 4.9,
     date: String,
     isFavorite: Boolean = false,
     onFavoriteClick: () -> Unit,

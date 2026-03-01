@@ -5,4 +5,8 @@ sealed class Screen(val route: String) {
     object Main : Screen("main")
     object Favorite : Screen("favorite")
     object Account : Screen("account")
+    object CourseDetail : Screen("course_detail")
+    companion object {
+        val mainScreens = listOf(Main, Favorite, Account)
+    }
 }

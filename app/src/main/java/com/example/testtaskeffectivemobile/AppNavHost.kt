@@ -13,13 +13,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.auth.presenation.screen.AuthScreen
 import com.example.design.components.navigation.BottomNavigationBar
 import com.example.design.theme.AppTheme
+import com.example.main.presentation.MainScreen
 import com.example.navigation.MainViewModel
 import com.example.navigation.NavItem
 import com.example.navigation.Screen
@@ -36,14 +39,16 @@ fun AppNavHost(
     val shouldShowBottomBar by viewModel.shouldShowBottomBar.collectAsState()
     val isNavigating by viewModel.isNavigating.collectAsState()
 
-    var isUserAuthenticated by remember { mutableStateOf(false) }
+    var isUserAuthenticated by remember { mutableStateOf(true) }
 
     LaunchedEffect(currentRoute, isNavigating) {
         if (!isNavigating) {
             viewModel.updateNavigationState(currentRoute)
         }
     }
-    print(selectedItem)
+
+    println("Selected item: $selectedItem")
+
     AppTheme {
         Scaffold(
             bottomBar = {
@@ -86,7 +91,7 @@ fun AppNavHost(
             ) {
                 NavHost(
                     navController = navController,
-                    startDestination = Screen.Auth.route,
+                    startDestination = if (isUserAuthenticated) Screen.Main.route else Screen.Auth.route,
                     modifier = Modifier.padding(paddingValues)
                 ) {
                     composable(Screen.Auth.route) {
@@ -98,31 +103,63 @@ fun AppNavHost(
                                 }
                             },
                             onNavigateToRegister = {
-
+                                // Навигация на экран регистрации
+                                // navController.navigate(Screen.Register.route)
                             }
                         )
                     }
-                    composable(Screen.Main.route) { MainScreen() }
-                    composable(Screen.Favorite.route) { FavoriteScreen() }
-                    composable(Screen.Account.route) { AccountScreen() }
+
+                    composable(Screen.Main.route) {
+                        MainScreen(
+                            onNavigateToCourse = { courseId ->
+                                navController.navigate("${Screen.CourseDetail.route}/$courseId")
+                            }
+                        )
+                    }
+
+                    composable(Screen.Favorite.route) {
+                        FavoriteScreen(
+                            onNavigateToCourse = { courseId ->
+                                navController.navigate("${Screen.CourseDetail.route}/$courseId")
+                            }
+                        )
+                    }
+
+                    composable(Screen.Account.route) {
+                        AccountScreen()
+                    }
+
+                    // Добавляем экран деталей курса
+                    composable(
+                        route = "${Screen.CourseDetail.route}/{courseId}",
+                        arguments = listOf(navArgument("courseId") { type = NavType.IntType })
+                    ) { backStackEntry ->
+                        val courseId = backStackEntry.arguments?.getInt("courseId") ?: return@composable
+                        CourseDetailScreen(courseId = courseId)
+                    }
                 }
             }
         }
     }
 }
 
-// Placeholder screens
+// Placeholder screens с правильными параметрами
 @Composable
 fun AccountScreen() {
-    // Content
+
 }
 
 @Composable
-fun FavoriteScreen() {
-    // Content
+fun FavoriteScreen(
+    onNavigateToCourse: (Int) -> Unit
+) {
+
 }
 
+// Добавляем экран деталей курса
 @Composable
-fun MainScreen() {
-    // Content
+fun CourseDetailScreen(
+    courseId: Int
+) {
+
 }
