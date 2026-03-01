@@ -8,12 +8,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.auth.presenation.screen.AuthScreen
 import com.example.design.components.navigation.BottomNavigationBar
 import com.example.design.theme.AppTheme
 import com.example.navigation.MainViewModel
@@ -31,6 +35,8 @@ fun AppNavHost(
     val selectedItem by viewModel.selectedItem.collectAsState()
     val shouldShowBottomBar by viewModel.shouldShowBottomBar.collectAsState()
     val isNavigating by viewModel.isNavigating.collectAsState()
+
+    var isUserAuthenticated by remember { mutableStateOf(false) }
 
     LaunchedEffect(currentRoute, isNavigating) {
         if (!isNavigating) {
@@ -80,10 +86,22 @@ fun AppNavHost(
             ) {
                 NavHost(
                     navController = navController,
-                    startDestination = Screen.Main.route,
+                    startDestination = Screen.Auth.route,
                     modifier = Modifier.padding(paddingValues)
                 ) {
-                    composable(Screen.Auth.route) { AuthScreen() }
+                    composable(Screen.Auth.route) {
+                        AuthScreen(
+                            onAuthSuccess = {
+                                isUserAuthenticated = true
+                                navController.navigate(Screen.Main.route) {
+                                    popUpTo(Screen.Auth.route) { inclusive = true }
+                                }
+                            },
+                            onNavigateToRegister = {
+
+                            }
+                        )
+                    }
                     composable(Screen.Main.route) { MainScreen() }
                     composable(Screen.Favorite.route) { FavoriteScreen() }
                     composable(Screen.Account.route) { AccountScreen() }
@@ -106,10 +124,5 @@ fun FavoriteScreen() {
 
 @Composable
 fun MainScreen() {
-    // Content
-}
-
-@Composable
-fun AuthScreen() {
     // Content
 }
