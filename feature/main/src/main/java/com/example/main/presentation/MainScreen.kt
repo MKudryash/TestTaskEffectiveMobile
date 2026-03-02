@@ -56,7 +56,7 @@ fun MainScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(top = 56.dp, start = dimensions.spacingLarge, end = dimensions.spacingLarge),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SearchBarWithFilter(

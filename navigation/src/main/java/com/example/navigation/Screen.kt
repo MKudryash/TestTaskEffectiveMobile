@@ -7,6 +7,6 @@ sealed class Screen(val route: String) {
     object Account : Screen("account")
     object CourseDetail : Screen("course_detail")
     companion object {
-        val mainScreens = listOf(Main, Favorite, Account)
+        val mainScreens = listOf(Main, Favorite, Account, CourseDetail)
     }
 }

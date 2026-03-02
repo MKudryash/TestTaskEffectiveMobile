@@ -24,7 +24,8 @@ val LightColorPalette = AppColors(
     socialOkStart = OkGradientStart,
     socialOkEnd = OkGradientEnd,
     favoriteActive = PrimaryGreen,
-    divider = Color(0xFFE0E0E0)
+    divider = Color(0xFFE0E0E0),
+    dark = Dark
 )
 
 // Главная тема

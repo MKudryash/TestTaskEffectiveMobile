@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 
 val PrimaryGreen = Color(0xFF12B956)
 val BackgroundDark = Color(0xFF1E1E1E)
+val Dark = Color(0xFF151515)
 val SurfaceDark = Color(0xFF24252A)
 val TextPrimaryWhite = Color.White
 val TextSecondaryGray = Color(0xFF8E8E93)
@@ -28,7 +29,8 @@ data class AppColors(
     val socialOkStart: Color,
     val socialOkEnd: Color,
     val favoriteActive: Color,
-    val divider: Color
+    val divider: Color,
+    val dark:Color
 )
 
 val DarkColorPalette = AppColors(
@@ -44,6 +46,7 @@ val DarkColorPalette = AppColors(
     socialOkStart = OkGradientStart,
     socialOkEnd = OkGradientEnd,
     favoriteActive = PrimaryGreen,
-    divider = Color(0xFF4D555E)
+    divider = Color(0xFF4D555E),
+    dark = Dark
 )
 val LocalAppColors = compositionLocalOf { DarkColorPalette }

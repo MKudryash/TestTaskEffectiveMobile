@@ -50,7 +50,6 @@ fun CourseCard(
         onClick = onCardClick
     ) {
         Column {
-            // Верхняя часть с изображением
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -121,7 +120,7 @@ fun CourseCard(
                 }
             }
 
-            // Нижняя часть с информацией
+
             Column(
                 modifier = Modifier
                     .weight(1f)

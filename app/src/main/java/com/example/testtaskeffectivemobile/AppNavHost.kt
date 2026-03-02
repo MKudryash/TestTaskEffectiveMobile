@@ -1,5 +1,6 @@
 package com.example.testtaskeffectivemobile
 
+import android.view.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -12,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -20,6 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.auth.presenation.screen.AuthScreen
+import com.example.coursedetail.presentation.CourseDetailScreen
 import com.example.design.components.navigation.BottomNavigationBar
 import com.example.design.theme.AppTheme
 import com.example.main.presentation.MainScreen
@@ -41,20 +44,30 @@ fun AppNavHost(
 
     var isUserAuthenticated by remember { mutableStateOf(true) }
 
+    val displaySelectedItem = remember(selectedItem, currentRoute) {
+        if (currentRoute?.startsWith(Screen.CourseDetail.route) == true) {
+            viewModel.getCurrentSelectedItem(currentRoute)
+        } else {
+            selectedItem
+        }
+    }
     LaunchedEffect(currentRoute, isNavigating) {
         if (!isNavigating) {
             viewModel.updateNavigationState(currentRoute)
         }
     }
 
+
+    println("Current route: $currentRoute")
     println("Selected item: $selectedItem")
+    println("Display selected item: $displaySelectedItem")
 
     AppTheme {
         Scaffold(
             bottomBar = {
                 if (shouldShowBottomBar) {
                     BottomNavigationBar(
-                        selectedItem = selectedItem,
+                        selectedItem = displaySelectedItem,
                         onItemSelected = { item ->
                             if (selectedItem != item && !isNavigating) {
                                 viewModel.onNavItemSelected(item) { navItem ->
@@ -92,7 +105,6 @@ fun AppNavHost(
                 NavHost(
                     navController = navController,
                     startDestination = if (isUserAuthenticated) Screen.Main.route else Screen.Auth.route,
-                    modifier = Modifier.padding(paddingValues)
                 ) {
                     composable(Screen.Auth.route) {
                         AuthScreen(
@@ -103,8 +115,7 @@ fun AppNavHost(
                                 }
                             },
                             onNavigateToRegister = {
-                                // Навигация на экран регистрации
-                                // navController.navigate(Screen.Register.route)
+
                             }
                         )
                     }
@@ -134,7 +145,9 @@ fun AppNavHost(
                         arguments = listOf(navArgument("courseId") { type = NavType.IntType })
                     ) { backStackEntry ->
                         val courseId = backStackEntry.arguments?.getInt("courseId") ?: return@composable
-                        CourseDetailScreen(courseId = courseId)
+                        CourseDetailScreen(courseId = courseId, onNavigateBack = {
+                            navController.popBackStack()
+                        })
                     }
                 }
             }
@@ -150,13 +163,6 @@ fun AccountScreen() {
 @Composable
 fun FavoriteScreen(
     onNavigateToCourse: (Int) -> Unit
-) {
-
-}
-
-@Composable
-fun CourseDetailScreen(
-    courseId: Int
 ) {
 
 }
