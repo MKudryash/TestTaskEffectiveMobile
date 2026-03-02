@@ -24,6 +24,8 @@ import com.example.design.theme.LocalAppTypography
 import com.example.main.domain.MainEffect
 import com.example.main.domain.MainEvent
 import com.example.main.presentation.components.CoursesList
+import com.example.main.presentation.components.ErrorContent
+import com.example.main.presentation.components.LoadingContent
 import com.example.main.presentation.components.SearchBarWithFilter
 import com.example.main.presentation.components.SortRow
 
@@ -74,19 +76,9 @@ fun MainScreen(
         )
 
         if (state.isLoading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
+            LoadingContent()
         } else if (state.error != null) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = state.error ?: "Ошибка")
-            }
+            ErrorContent(state.error ?: "Ошибка") { }
         } else {
             CoursesList(
                 courses = state.filteredCourses,
