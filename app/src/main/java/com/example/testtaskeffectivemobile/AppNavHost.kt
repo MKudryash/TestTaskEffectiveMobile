@@ -129,7 +129,6 @@ fun AppNavHost(
                         AccountScreen()
                     }
 
-                    // Добавляем экран деталей курса
                     composable(
                         route = "${Screen.CourseDetail.route}/{courseId}",
                         arguments = listOf(navArgument("courseId") { type = NavType.IntType })
@@ -143,7 +142,6 @@ fun AppNavHost(
     }
 }
 
-// Placeholder screens с правильными параметрами
 @Composable
 fun AccountScreen() {
 
@@ -156,7 +154,6 @@ fun FavoriteScreen(
 
 }
 
-// Добавляем экран деталей курса
 @Composable
 fun CourseDetailScreen(
     courseId: Int

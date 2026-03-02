@@ -8,6 +8,7 @@ sealed class MainEvent {
     data class CourseClicked(val courseId: Int) : MainEvent()
     data class ToggleFavorite(val courseId: Int) : MainEvent()
     object RefreshCourses : MainEvent()
+    object LoadCourses : MainEvent()
 }
 
 data class MainState(

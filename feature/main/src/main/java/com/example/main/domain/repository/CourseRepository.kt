@@ -1,12 +1,10 @@
 package com.example.main.domain.repository
 
-
+import com.example.main.domain.model.Course
 import kotlinx.coroutines.flow.Flow
 
 interface CourseRepository {
-   /* fun getCourses(): Flow<List<Course>>
-    suspend fun getCourseById(id: Int): Course?
+    suspend fun getCourses(): List<Course>
     suspend fun toggleFavorite(courseId: Int)
-    suspend fun searchCourses(query: String): List<Course>
-    suspend fun refreshCourses()*/
+    fun getFavoriteCourses(): Flow<List<Course>>
 }

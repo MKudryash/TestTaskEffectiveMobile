@@ -1,106 +1,46 @@
-package com.example.main.data
+package com.example.main.data.repository
 
+import com.example.main.data.mapper.CourseMapper
+import com.example.main.domain.model.Course
 import com.example.main.domain.repository.CourseRepository
+import com.example.network.api.CourseApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CourseRepositoryImpl @Inject constructor(
-   /* private val courseApi: CourseApi,
-    private val courseDao: CourseDao*/
+    private val api: CourseApi,
+    private val mapper: CourseMapper
 ) : CourseRepository {
 
-   /* override fun getCourses(): Flow<List<Course>> {
-        return courseDao.getAllCourses()
-            .map { entities -> entities.map { it.toDomain() } }
-            .onStart {
-                // Если база пустая, загружаем с сервера
-                val courses = courseDao.getAllCourses().first()
-                if (courses.isEmpty()) {
-                    refreshCourses()
-                }
-            }
-    }
+    private val _courses = MutableStateFlow<List<Course>>(emptyList())
 
-    override suspend fun getCourseById(id: Int): Course? {
-        // Сначала проверяем в БД
-        val localCourse = courseDao.getCourseById(id)?.toDomain()
-        if (localCourse != null) return localCourse
-
-        // Если нет в БД, грузим с сервера
-        return try {
-            val remoteCourse = courseApi.getCourseById(id)
-            val course = remoteCourse.toDomain()
-            // Сохраняем в БД
-            courseDao.insertAll(listOf(course.toEntity()))
-            course
+    override suspend fun getCourses(): List<Course> {
+        try {
+            val response = api.getCourses()
+            val courses = response.courses.map { mapper.mapToDomain(it) }
+            _courses.value = courses
+            return courses
         } catch (e: Exception) {
-            null
+            return _courses.value
         }
     }
 
     override suspend fun toggleFavorite(courseId: Int) {
-        val course = courseDao.getCourseById(courseId)
-        course?.let {
-            val newFavoriteStatus = !it.isFavorite
-            courseDao.updateFavoriteStatus(courseId, newFavoriteStatus)
+        _courses.value = _courses.value.map { course ->
+            if (course.id == courseId) {
+                course.copy(isFavorite = !course.isFavorite)
+            } else course
         }
     }
 
-    override suspend fun searchCourses(query: String): List<Course> {
-        // Локальный поиск
-        val localResults = courseDao.getAllCourses()
-            .first()
-            .filter { entity ->
-                entity.title.contains(query, ignoreCase = true) ||
-                        entity.description.contains(query, ignoreCase = true)
-            }
-            .map { it.toDomain() }
-
-        // Если локальных результатов мало, ищем на сервере
-        if (localResults.size < 3) {
-            try {
-                val remoteResults = courseApi.searchCourses(query)
-                // Сохраняем результаты в БД
-                val entities = remoteResults.map { dto ->
-                    val existing = courseDao.getCourseById(dto.id)
-                    dto.toDomain(existing?.isFavorite ?: false).toEntity()
-                }
-                courseDao.insertAll(entities)
-
-                return remoteResults.map { dto ->
-                    val existing = courseDao.getCourseById(dto.id)
-                    dto.toDomain(existing?.isFavorite ?: false)
-                }
-            } catch (e: Exception) {
-                // В случае ошибки возвращаем локальные результаты
-            }
+    override fun getFavoriteCourses(): Flow<List<Course>> {
+        return _courses.asStateFlow().map { courses ->
+            courses.filter { it.isFavorite }
         }
-
-        return localResults
     }
-
-    override suspend fun refreshCourses() {
-        try {
-            val remoteCourses = courseApi.getCourses()
-
-            // Получаем текущие избранные статусы
-            val currentFavorites = courseDao.getAllCourses()
-                .first()
-                .associate { it.id to it.isFavorite }
-
-            // Обновляем данные, сохраняя избранное
-            val entities = remoteCourses.map { dto ->
-                dto.toDomain(currentFavorites[dto.id] ?: false).toEntity()
-            }
-
-            courseDao.insertAll(entities)
-        } catch (e: Exception) {
-            // Обработка ошибки
-            throw e
-        }
-    }*/
 }

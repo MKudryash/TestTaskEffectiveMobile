@@ -43,9 +43,9 @@ fun CoursesList(
                 CourseCard(
 
                     rating = course.rating,
-                    date = course.getFormattedDate(),
+                    date = course.getFormattedPublishDate(),
                     isFavorite = course.isFavorite,
-                    onFavoriteClick = { course.isFavorite = !course.isFavorite },
+                    onFavoriteClick = { onFavoriteClick(course.id) },
                     onCardClick = {onCourseClick(course.id)},
                     imageUrl = course.imageUrl,
                     content = {
