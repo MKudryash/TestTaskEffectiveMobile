@@ -41,15 +41,20 @@ fun CoursesList(
         ) {
             items(courses, key = { it.id }) { course ->
                 CourseCard(
-                    title = course.title,
-                    description = course.description,
-                    price = course.price,
+
                     rating = course.rating,
                     date = course.getFormattedDate(),
                     isFavorite = course.isFavorite,
                     onFavoriteClick = { course.isFavorite = !course.isFavorite },
-                    onCardClick = {},
-                    imageUrl = course.imageUrl
+                    onCardClick = {onCourseClick(course.id)},
+                    imageUrl = course.imageUrl,
+                    content = {
+                        ContentCard(
+                            title = course.title,
+                            description = course.description,
+                            price = course.price,
+                        )
+                    }
                 )
             }
         }
