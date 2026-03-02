@@ -21,7 +21,6 @@ import com.example.design.theme.LocalAppColors
 import com.example.design.theme.LocalAppDimensions
 import com.example.design.theme.LocalAppTypography
 
-@Preview
 @Composable
 fun  AccountScreen () {
     val colors = LocalAppColors.current
@@ -31,7 +30,7 @@ fun  AccountScreen () {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensions.spacingLarge),
+            .padding(start = dimensions.spacingLarge, end = dimensions.spacingLarge, top = 56.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
             Text(
@@ -58,13 +57,13 @@ fun  AccountScreen () {
                 Column(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    // Первый элемент
+
                     AccountAction(
                         text = "Написать в поддержку",
                         onClick = {}
                     )
 
-                    // Разделительная линия
+
                     HorizontalDivider(
                         Modifier.padding(  start = dimensions.spacingLarge,
                             end =  dimensions.spacingLarge-4.dp,),
@@ -72,13 +71,13 @@ fun  AccountScreen () {
                         color = colors.divider
                     )
 
-                    // Второй элемент
+
                     AccountAction(
                         text = "Настройки",
                         onClick = {}
                     )
 
-                    // Разделительная линия
+
                     HorizontalDivider(
                         Modifier.padding(  start = dimensions.spacingLarge,
                             end =  dimensions.spacingLarge-4.dp,),
@@ -86,7 +85,6 @@ fun  AccountScreen () {
                         color = colors.divider
                     )
 
-                    // Третий элемент (без линии после него, если он последний)
                     AccountAction(
                         text = "Выйти из аккаунта",
                         onClick = {}

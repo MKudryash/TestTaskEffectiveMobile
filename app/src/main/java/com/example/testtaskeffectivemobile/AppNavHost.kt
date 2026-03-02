@@ -44,7 +44,7 @@ fun AppNavHost(
     val shouldShowBottomBar by viewModel.shouldShowBottomBar.collectAsState()
     val isNavigating by viewModel.isNavigating.collectAsState()
 
-    var isUserAuthenticated by remember { mutableStateOf(true) }
+    var isUserAuthenticated by remember { mutableStateOf(false) }
 
     val displaySelectedItem = remember(selectedItem, currentRoute) {
         if (currentRoute?.startsWith(Screen.CourseDetail.route) == true) {
