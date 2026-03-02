@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.auth.presenation.screen.isValidEmail
+import com.example.auth.presenation.viewmodel.AuthViewModel
 import com.example.design.components.button.AppButton
 import com.example.design.components.feedback.ErrorMessage
 import com.example.design.components.input.AppTextField
@@ -34,7 +35,8 @@ fun AuthContent(
     isLoginMode: Boolean,
     onLoginClick: (String, String) -> Unit,
     onRegisterClick: (String, String, String) -> Unit,
-    onToggleMode: () -> Unit
+    onToggleMode: () -> Unit,
+    viewModel: AuthViewModel
 ) {
     val colors = LocalAppColors.current
     val typography = LocalAppTypography.current
@@ -153,6 +155,6 @@ fun AuthContent(
         )
         Spacer(Modifier.Companion.height(dimensions.spacingExtraExtraLarge))
 
-        OtherAuthForm(snackbarHostState = snackbarHostState)
+        OtherAuthForm(snackbarHostState = snackbarHostState, viewModel = viewModel)
     }
 }

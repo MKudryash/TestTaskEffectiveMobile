@@ -81,7 +81,8 @@ fun AuthScreen(
                     onRegisterClick = { email, password, name ->
 
                     },
-                    onToggleMode = { isLoginMode = !isLoginMode }
+                    onToggleMode = { isLoginMode = !isLoginMode },
+                    viewModel
                 )
             }
         }

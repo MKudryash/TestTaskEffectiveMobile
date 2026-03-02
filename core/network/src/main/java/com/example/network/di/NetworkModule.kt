@@ -48,4 +48,6 @@ object NetworkModule {
     fun provideCourseApi(retrofit: Retrofit): CourseApi {
         return retrofit.create(CourseApi::class.java)
     }
+
+
 }
