@@ -11,7 +11,6 @@ class ExternalNavigationManagerImpl @Inject constructor() : ExternalNavigationMa
 
     override fun openUrl(context: Context, url: String): Result<Unit> {
         return try {
-            // Здесь можно использовать UseCase
             val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(url))
             intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
 

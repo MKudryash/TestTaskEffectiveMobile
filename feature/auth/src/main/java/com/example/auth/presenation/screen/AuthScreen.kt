@@ -45,17 +45,16 @@ fun AuthScreen(
     onAuthSuccess: () -> Unit,
     onNavigateToRegister: () -> Unit,
 ) {
-    val colors = LocalAppColors.current
-    val typography = LocalAppTypography.current
+
     val dimensions = LocalAppDimensions.current
 
-    // Состояние для переключения между входом и регистрацией
+
     var isLoginMode by remember { mutableStateOf(true) }
 
-    // Snackbar state for showing errors
+
     val snackbarHostState = remember { SnackbarHostState() }
 
-    // Наблюдаем за состоянием аутентификации
+
     val authState by viewModel.authState.collectAsState()
 
     LaunchedEffect(authState) {
@@ -95,7 +94,7 @@ fun AuthScreen(
                         viewModel.login(email, password)
                     },
                     onRegisterClick = { email, password, name ->
-                        viewModel.register(email, password, name)
+
                     },
                     onToggleMode = { isLoginMode = !isLoginMode }
                 )

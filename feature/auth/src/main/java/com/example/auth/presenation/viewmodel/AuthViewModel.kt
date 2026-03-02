@@ -33,22 +33,6 @@ class AuthViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun register(email: String, password: String, name: String) {
-        viewModelScope.launch {
-            _authState.value = AuthState.Loading
-
-            // Имитация запроса к API
-            delay(1000)
-
-            if (email.isNotBlank() && password.isNotBlank() && name.isNotBlank()) {
-                // Здесь должна быть реальная регистрация
-                _authState.value = AuthState.Success
-            } else {
-                _authState.value = AuthState.Error("Заполните все поля")
-            }
-        }
-    }
-
     fun resetState() {
         _authState.value = AuthState.Idle
     }

@@ -101,7 +101,6 @@ class MainViewModel @Inject constructor(
             try {
                 repository.toggleFavorite(courseId)
 
-                // Обновляем состояние после изменения избранного
                 _state.update { state ->
                     val updatedCourses = state.courses.map { course ->
                         if (course.id == courseId) {

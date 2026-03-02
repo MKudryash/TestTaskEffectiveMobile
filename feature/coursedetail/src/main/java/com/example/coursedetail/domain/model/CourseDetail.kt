@@ -28,19 +28,4 @@ data class CourseDetail(
             publishDate
         }
     }
-
-    fun getFormattedStartDate(): String {
-        return try {
-            val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val date = format.parse(startDate)
-            val outputFormat = SimpleDateFormat("d MMMM yyyy", Locale("ru"))
-            date?.let { outputFormat.format(it) } ?: startDate
-        } catch (e: Exception) {
-            startDate
-        }
-    }
-
-    fun getDisplayPrice(): String {
-        return "$priceString $currency"
-    }
 }

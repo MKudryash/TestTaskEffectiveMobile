@@ -107,6 +107,7 @@ fun AppNavHost(
                 NavHost(
                     navController = navController,
                     startDestination = if (isUserAuthenticated) Screen.Main.route else Screen.Auth.route,
+                    modifier = Modifier.padding(paddingValues)
                 ) {
                     composable(Screen.Auth.route) {
                         AuthScreen(

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -83,14 +84,24 @@ fun FavoriteScreen(
                 )
             }
         } else {
-            CoursesList(
-                courses = state.favoriteCourses,
-                onCourseClick = { viewModel.handleEvent(FavoriteEvent.CourseClicked(it)) },
-                onFavoriteClick = { viewModel.handleEvent(FavoriteEvent.RemoveFromFavorite(it)) },
-                colors = colors,
-                dimensions = dimensions,
-                typography = typography
-            )
+
+
+                    CoursesList(
+                        courses = state.favoriteCourses,
+                        onCourseClick = { viewModel.handleEvent(FavoriteEvent.CourseClicked(it)) },
+                        onFavoriteClick = {
+                            viewModel.handleEvent(
+                                FavoriteEvent.RemoveFromFavorite(
+                                    it
+                                )
+                            )
+                        },
+                        colors = colors,
+                        dimensions = dimensions,
+                        typography = typography
+                    )
+
+
         }
     }
 }
