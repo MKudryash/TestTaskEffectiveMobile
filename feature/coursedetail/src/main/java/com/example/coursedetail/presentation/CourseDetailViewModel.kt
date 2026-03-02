@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coursedetail.domain.model.CourseDetail
 import com.example.coursedetail.domain.usercase.GetCourseByIdUseCase
+import com.example.main.domain.repository.CourseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CourseDetailViewModel @Inject constructor(
     private val getCourseByIdUseCase: GetCourseByIdUseCase,
+    private val courseRepository: CourseRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -78,11 +80,16 @@ class CourseDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val currentCourse = _state.value.course
             if (currentCourse != null) {
+
                 _state.update {
                     it.copy(
                         course = currentCourse.copy(isFavorite = !currentCourse.isFavorite)
                     )
                 }
+
+
+                courseRepository.toggleFavorite(courseId)
+
 
                 _effect.emit(
                     CourseDetailEffect.ShowMessage(

@@ -1,9 +1,10 @@
 package com.example.main.di
 
+import com.example.database.dao.FavoriteCourseDao
 import com.example.main.data.mapper.CourseMapper
 import com.example.main.data.repository.CourseRepositoryImpl
 import com.example.main.domain.repository.CourseRepository
-import dagger.Binds
+import com.example.network.api.CourseApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,19 +13,21 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class MainModule {
+class MainModule {
 
-    @Binds
+    @Provides
     @Singleton
-    abstract fun bindCourseRepository(
-        repositoryImpl: CourseRepositoryImpl
-    ): CourseRepository
+    fun provideCourseRepository(
+        api: CourseApi,
+        mapper: CourseMapper,
+        favoriteDao: FavoriteCourseDao
+    ): CourseRepository {
+        return CourseRepositoryImpl(api, mapper, favoriteDao)
+    }
 
-    companion object {
-        @Provides
-        @Singleton
-        fun provideCourseMapper(): CourseMapper {
-            return CourseMapper()
-        }
+    @Provides
+    @Singleton
+    fun provideCourseMapper(): CourseMapper {
+        return CourseMapper()
     }
 }

@@ -98,25 +98,32 @@ class MainViewModel @Inject constructor(
 
     private fun toggleFavorite(courseId: Int) {
         viewModelScope.launch {
-            repository.toggleFavorite(courseId)
+            try {
+                repository.toggleFavorite(courseId)
 
-            _state.update { state ->
-                val updatedCourses = state.courses.map { course ->
-                    if (course.id == courseId) {
-                        course.copy(isFavorite = !course.isFavorite)
-                    } else course
+                // Обновляем состояние после изменения избранного
+                _state.update { state ->
+                    val updatedCourses = state.courses.map { course ->
+                        if (course.id == courseId) {
+                            course.copy(isFavorite = !course.isFavorite)
+                        } else course
+                    }
+
+                    val updatedFiltered = state.filteredCourses.map { course ->
+                        if (course.id == courseId) {
+                            course.copy(isFavorite = !course.isFavorite)
+                        } else course
+                    }
+
+                    state.copy(
+                        courses = updatedCourses,
+                        filteredCourses = updatedFiltered
+                    )
                 }
-
-                val updatedFiltered = state.filteredCourses.map { course ->
-                    if (course.id == courseId) {
-                        course.copy(isFavorite = !course.isFavorite)
-                    } else course
+            } catch (e: Exception) {
+                viewModelScope.launch {
+                    _effect.emit(MainEffect.ShowError("Ошибка при изменении избранного"))
                 }
-
-                state.copy(
-                    courses = updatedCourses,
-                    filteredCourses = updatedFiltered
-                )
             }
         }
     }

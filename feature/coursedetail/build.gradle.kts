@@ -59,6 +59,8 @@ dependencies {
     implementation(project(":core:design"))
     implementation(project(":core"))
     implementation(project(":core:network"))
+    implementation(project(":core:database"))
+    implementation(project(":feature:main"))
 
 
     implementation("com.google.dagger:hilt-android:2.51.1")

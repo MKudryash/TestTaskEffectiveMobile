@@ -60,4 +60,5 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     implementation(project(":core:network"))
+    implementation(project(":core:database"))
 }

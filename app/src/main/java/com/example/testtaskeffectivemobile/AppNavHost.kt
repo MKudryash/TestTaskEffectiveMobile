@@ -21,10 +21,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.account.presentation.AccountScreen
 import com.example.auth.presenation.screen.AuthScreen
 import com.example.coursedetail.presentation.CourseDetailScreen
 import com.example.design.components.navigation.BottomNavigationBar
 import com.example.design.theme.AppTheme
+import com.example.favorite.presentation.FavoriteScreen
 import com.example.main.presentation.MainScreen
 import com.example.navigation.MainViewModel
 import com.example.navigation.NavItem
@@ -155,14 +157,3 @@ fun AppNavHost(
     }
 }
 
-@Composable
-fun AccountScreen() {
-
-}
-
-@Composable
-fun FavoriteScreen(
-    onNavigateToCourse: (Int) -> Unit
-) {
-
-}

@@ -30,7 +30,10 @@ import com.example.design.components.button.AppButton
 import com.example.effectivemobiletesttask.core.design.components.tag.IconTag
 
 @Composable
-fun CourseDetailContent(course: CourseDetail, onNavigateBack: () -> Unit) {
+fun CourseDetailContent(course: CourseDetail, onNavigateBack: () -> Unit,
+                        onToggleFavorite:()->Unit) {
+
+
     val colors = LocalAppColors.current
     val dimensions = LocalAppDimensions.current
     val typography = LocalAppTypography.current
@@ -47,7 +50,7 @@ fun CourseDetailContent(course: CourseDetail, onNavigateBack: () -> Unit) {
                     modifier = Modifier.fillMaxHeight(0.4f),
                     isFavorite = course.isFavorite,
                     rating = course.rating,
-                    onFavoriteClick = {},
+                    onFavoriteClick = { onToggleFavorite()},
                     date = course.getFormattedPublishDate(),
                     onBackNavigate = onNavigateBack)
 
@@ -92,7 +95,7 @@ fun CourseDetailContent(course: CourseDetail, onNavigateBack: () -> Unit) {
                             Text(
                                 "Автор",
                                 style = typography.bodySmall.copy(
-                                    color = Color(0xFFF2F2F3),
+                                    color =  colors.textSecondary,
                                     fontWeight = FontWeight.Normal
                                 )
                             )
@@ -131,7 +134,7 @@ fun CourseDetailContent(course: CourseDetail, onNavigateBack: () -> Unit) {
                     )
                     Text(
                         text = course.description,
-                        style = typography.bodySmall.copy(lineHeight = 20.sp, letterSpacing = 0.25.sp, color = Color(0xFFF2F2F3)),
+                        style = typography.bodySmall.copy(lineHeight = 20.sp, letterSpacing = 0.25.sp, color =  colors.textSecondary,),
 
                     )
                 }
@@ -139,6 +142,7 @@ fun CourseDetailContent(course: CourseDetail, onNavigateBack: () -> Unit) {
         }
     }
 }
+/*
 
 @Preview
 @Composable
@@ -156,4 +160,4 @@ fun CourseDetailContentPreview() {
             publishDate = "2024-02-02",
         ), {}
     )
-}
+}*/

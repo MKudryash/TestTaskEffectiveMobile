@@ -70,7 +70,9 @@ fun CourseDetailScreen(
                 Log.d("CourseDetailScreen", state.course!!.title.toString())
                 CourseDetailContent(
                     course = state.course!!,
-                    onNavigateBack = onNavigateBack
+                    onNavigateBack = onNavigateBack,
+                    onToggleFavorite = {
+                        viewModel.handleEvent(CourseDetailEvent.ToggleFavorite)}
                 )
             }
         }
