@@ -139,7 +139,7 @@ fun AuthContent(
                 textAlign = TextAlign.Start
             )
 
-            // Email поле
+
             AppTextField(
                 value = email,
                 onValueChange = {
@@ -156,7 +156,7 @@ fun AuthContent(
                 ErrorMessage(text = "Введите корректный email адрес")
             }
 
-            // Поле пароля
+
             AppTextField(
                 value = password,
                 onValueChange = {
@@ -176,7 +176,7 @@ fun AuthContent(
 
             Spacer(modifier = Modifier.Companion.height(dimensions.spacingMedium))
 
-            // Кнопка отправки
+
             AppButton(
                 text = "Вход",
                 onClick = {

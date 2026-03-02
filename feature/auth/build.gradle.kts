@@ -7,6 +7,7 @@ plugins {
 }
 
 android {
+
     namespace = "com.example.auth"
     compileSdk = 36
 
