@@ -4,9 +4,9 @@ package com.example.coursedetail.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.coursedetail.domain.model.CourseDetail
 import com.example.coursedetail.domain.usecase.GetCourseByIdUseCase
 import com.example.coursedetail.domain.usecase.ToggleFavoriteUseCase
+import com.example.domain.model.Course
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -75,7 +75,6 @@ class CourseDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val currentCourse = _state.value.course
             if (currentCourse != null) {
-                // Оптимистичное обновление UI
                 _state.update {
                     it.copy(
                         course = currentCourse.copy(isFavorite = !currentCourse.isFavorite)
@@ -83,7 +82,7 @@ class CourseDetailViewModel @Inject constructor(
                 }
 
                 try {
-                    // Вызов UseCase для обновления в БД
+
                     toggleFavoriteUseCase(courseId)
 
                     _effect.emit(
@@ -93,7 +92,7 @@ class CourseDetailViewModel @Inject constructor(
                         )
                     )
                 } catch (e: Exception) {
-                    // Откатываем изменения в случае ошибки
+
                     _state.update {
                         it.copy(
                             course = currentCourse.copy(isFavorite = currentCourse.isFavorite)
@@ -110,7 +109,7 @@ class CourseDetailViewModel @Inject constructor(
 }
 
 data class CourseDetailState(
-    val course: CourseDetail? = null,
+    val course: Course? = null,
     val isLoading: Boolean = false,
     val error: String? = null
 )

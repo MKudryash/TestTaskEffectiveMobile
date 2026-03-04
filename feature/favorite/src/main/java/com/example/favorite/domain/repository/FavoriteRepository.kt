@@ -1,7 +1,6 @@
-// file: domain/repository/FavoriteRepository.kt
 package com.example.favorite.domain.repository
 
-import com.example.main.domain.model.Course
+import com.example.domain.model.Course
 import kotlinx.coroutines.flow.Flow
 
 interface FavoriteRepository {

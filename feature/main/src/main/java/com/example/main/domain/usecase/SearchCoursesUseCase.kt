@@ -1,6 +1,7 @@
 package com.example.main.domain.usecase
 
-import com.example.main.domain.model.Course
+
+import com.example.domain.model.Course
 import javax.inject.Inject
 
 class SearchCoursesUseCase @Inject constructor() {

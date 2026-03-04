@@ -1,8 +1,8 @@
 package com.example.main.di
 
+import com.example.data.mapper.CourseMapper
 import com.example.database.dao.FavoriteCourseDao
-import com.example.main.data.mapper.CourseMapper
-import com.example.main.data.repository.CourseRepositoryImpl
+import com.example.main.data.CourseRepositoryImpl
 import com.example.main.domain.repository.CourseRepository
 import com.example.network.api.CourseApi
 import dagger.Module

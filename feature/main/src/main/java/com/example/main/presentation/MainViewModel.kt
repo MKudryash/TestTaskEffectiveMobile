@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.main.domain.MainEffect
 import com.example.main.domain.MainEvent
 import com.example.main.domain.MainState
-import com.example.main.domain.model.Course
 import com.example.main.domain.usecase.GetCoursesUseCase
 import com.example.main.domain.usecase.SearchCoursesUseCase
 import com.example.main.domain.usecase.SortCoursesUseCase

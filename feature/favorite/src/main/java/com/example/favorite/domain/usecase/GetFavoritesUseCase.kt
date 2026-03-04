@@ -1,7 +1,7 @@
 package com.example.favorite.domain.usecase
 
+import com.example.domain.model.Course
 import com.example.favorite.domain.repository.FavoriteRepository
-import com.example.main.domain.model.Course
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

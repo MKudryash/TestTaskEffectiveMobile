@@ -1,6 +1,7 @@
 package com.example.main.domain
 
-import com.example.main.domain.model.Course
+import com.example.domain.model.Course
+
 
 sealed class MainEvent {
     data class SearchQueryChanged(val query: String) : MainEvent()

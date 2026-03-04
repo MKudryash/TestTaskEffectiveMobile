@@ -21,16 +21,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.coursedetail.domain.model.CourseDetail
 import com.example.design.theme.LocalAppColors
 import com.example.design.theme.LocalAppDimensions
 import com.example.design.theme.LocalAppTypography
 import com.example.design.R
 import com.example.design.components.button.AppButton
+import com.example.domain.model.Course
 import com.example.effectivemobiletesttask.core.design.components.tag.IconTag
 
 @Composable
-fun CourseDetailContent(course: CourseDetail, onNavigateBack: () -> Unit,
+fun CourseDetailContent(course: Course, onNavigateBack: () -> Unit,
                         onToggleFavorite:()->Unit) {
 
 
@@ -74,7 +74,7 @@ fun CourseDetailContent(course: CourseDetail, onNavigateBack: () -> Unit,
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        if (course.imageAuthorUrl == null) {
+                        if (course.authorImageUrl == null) {
                             IconTag(
                                 icon = painterResource(
                                     id = R.drawable.bookmark_fill

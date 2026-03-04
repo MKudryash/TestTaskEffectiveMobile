@@ -13,7 +13,7 @@ import com.example.design.components.card.CourseCard
 import com.example.design.theme.AppColors
 import com.example.design.theme.AppDimensions
 import com.example.design.theme.AppTypography
-import com.example.main.domain.model.Course
+import com.example.domain.model.Course
 
 @Composable
 fun CoursesList(

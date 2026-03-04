@@ -1,9 +1,9 @@
-package com.example.coursedetail.domain.model
+package com.example.domain.model
 
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-data class CourseDetail(
+data class Course(
     val id: Int,
     val title: String,
     val description: String,
@@ -15,8 +15,8 @@ data class CourseDetail(
     val rating: Double? = null,
     val startDate: String,
     val publishDate: String,
-    val author:String? = "Merion Academy",
-    val imageAuthorUrl: String? = null
+    val author: String? = "Merion Academy",
+    val authorImageUrl: String? = null
 ) {
     fun getFormattedPublishDate(): String {
         return try {
@@ -28,4 +28,6 @@ data class CourseDetail(
             publishDate
         }
     }
+
+    fun toCourseDetail(): Course = this
 }

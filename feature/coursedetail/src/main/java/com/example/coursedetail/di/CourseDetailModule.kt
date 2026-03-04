@@ -1,9 +1,10 @@
 package com.example.coursedetail.di
 
-import com.example.coursedetail.data.mapper.CourseDetailMapper
 import com.example.coursedetail.data.repository.CourseDetailRepositoryImpl
 import com.example.coursedetail.domain.repository.CourseDetailRepository
 import com.example.coursedetail.domain.usecase.GetCourseByIdUseCase
+import com.example.coursedetail.domain.usecase.ToggleFavoriteUseCase
+import com.example.data.mapper.CourseMapper
 import com.example.database.dao.FavoriteCourseDao
 import com.example.network.api.CourseApi
 import dagger.Module
@@ -18,15 +19,9 @@ object CourseDetailModule {
 
     @Provides
     @Singleton
-    fun provideCourseDetailMapper(): CourseDetailMapper {
-        return CourseDetailMapper()
-    }
-
-    @Provides
-    @Singleton
     fun provideCourseDetailRepository(
         api: CourseApi,
-        mapper: CourseDetailMapper,
+        mapper: CourseMapper,
         favoriteDao: FavoriteCourseDao
     ): CourseDetailRepository {
         return CourseDetailRepositoryImpl(api, mapper, favoriteDao)
@@ -38,5 +33,13 @@ object CourseDetailModule {
         repository: CourseDetailRepository
     ): GetCourseByIdUseCase {
         return GetCourseByIdUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideToggleFavoriteUseCase(
+        repository: CourseDetailRepository
+    ): ToggleFavoriteUseCase {
+        return ToggleFavoriteUseCase(repository)
     }
 }

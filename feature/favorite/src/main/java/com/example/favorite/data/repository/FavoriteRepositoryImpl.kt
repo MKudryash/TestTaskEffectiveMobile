@@ -2,8 +2,8 @@ package com.example.favorite.data.repository
 
 import com.example.database.dao.FavoriteCourseDao
 import com.example.database.model.FavoriteCourseEntity
+import com.example.domain.model.Course
 import com.example.favorite.domain.repository.FavoriteRepository
-import com.example.main.domain.model.Course
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
