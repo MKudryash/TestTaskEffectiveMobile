@@ -1,11 +1,12 @@
+// file: presentation/CourseDetailViewModel.kt
 package com.example.coursedetail.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coursedetail.domain.model.CourseDetail
-import com.example.coursedetail.domain.usercase.GetCourseByIdUseCase
-import com.example.main.domain.repository.CourseRepository
+import com.example.coursedetail.domain.usecase.GetCourseByIdUseCase
+import com.example.coursedetail.domain.usecase.ToggleFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CourseDetailViewModel @Inject constructor(
     private val getCourseByIdUseCase: GetCourseByIdUseCase,
-    private val courseRepository: CourseRepository,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -43,12 +44,6 @@ class CourseDetailViewModel @Inject constructor(
             }
             CourseDetailEvent.Retry -> {
                 loadCourse()
-            }
-            CourseDetailEvent.EnrollCourse -> {
-                enrollCourse()
-            }
-            CourseDetailEvent.ShareCourse -> {
-                shareCourse()
             }
         }
     }
@@ -80,41 +75,38 @@ class CourseDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val currentCourse = _state.value.course
             if (currentCourse != null) {
-
+                // Оптимистичное обновление UI
                 _state.update {
                     it.copy(
                         course = currentCourse.copy(isFavorite = !currentCourse.isFavorite)
                     )
                 }
 
+                try {
+                    // Вызов UseCase для обновления в БД
+                    toggleFavoriteUseCase(courseId)
 
-                courseRepository.toggleFavorite(courseId)
-
-
-                _effect.emit(
-                    CourseDetailEffect.ShowMessage(
-                        if (!currentCourse.isFavorite) "Добавлено в избранное"
-                        else "Удалено из избранного"
+                    _effect.emit(
+                        CourseDetailEffect.ShowMessage(
+                            if (!currentCourse.isFavorite) "Добавлено в избранное"
+                            else "Удалено из избранного"
+                        )
                     )
-                )
+                } catch (e: Exception) {
+                    // Откатываем изменения в случае ошибки
+                    _state.update {
+                        it.copy(
+                            course = currentCourse.copy(isFavorite = currentCourse.isFavorite)
+                        )
+                    }
+                    _effect.emit(
+                        CourseDetailEffect.ShowMessage("Ошибка при обновлении избранного")
+                    )
+                }
             }
         }
     }
 
-    private fun enrollCourse() {
-        viewModelScope.launch {
-            _effect.emit(CourseDetailEffect.ShowMessage("Вы записаны на курс!"))
-        }
-    }
-
-    private fun shareCourse() {
-        viewModelScope.launch {
-            _effect.emit(CourseDetailEffect.ShareCourse(
-                title = _state.value.course?.title ?: "Курс",
-                id = courseId
-            ))
-        }
-    }
 }
 
 data class CourseDetailState(
@@ -126,11 +118,9 @@ data class CourseDetailState(
 sealed class CourseDetailEvent {
     object ToggleFavorite : CourseDetailEvent()
     object Retry : CourseDetailEvent()
-    object EnrollCourse : CourseDetailEvent()
-    object ShareCourse : CourseDetailEvent()
 }
 
 sealed class CourseDetailEffect {
     data class ShowMessage(val message: String) : CourseDetailEffect()
-    data class ShareCourse(val title: String, val id: Int) : CourseDetailEffect()
+    data class ShareCourse(val title: String, val id: Int, val shareText: String) : CourseDetailEffect()
 }

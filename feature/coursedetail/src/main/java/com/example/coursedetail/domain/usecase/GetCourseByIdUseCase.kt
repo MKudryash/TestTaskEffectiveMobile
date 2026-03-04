@@ -1,4 +1,4 @@
-package com.example.coursedetail.domain.usercase
+package com.example.coursedetail.domain.usecase
 
 
 import com.example.coursedetail.domain.model.CourseDetail

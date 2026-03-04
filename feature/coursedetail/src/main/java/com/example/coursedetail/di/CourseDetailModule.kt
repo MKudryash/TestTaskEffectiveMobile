@@ -3,7 +3,7 @@ package com.example.coursedetail.di
 import com.example.coursedetail.data.mapper.CourseDetailMapper
 import com.example.coursedetail.data.repository.CourseDetailRepositoryImpl
 import com.example.coursedetail.domain.repository.CourseDetailRepository
-import com.example.coursedetail.domain.usercase.GetCourseByIdUseCase
+import com.example.coursedetail.domain.usecase.GetCourseByIdUseCase
 import com.example.database.dao.FavoriteCourseDao
 import com.example.network.api.CourseApi
 import dagger.Module

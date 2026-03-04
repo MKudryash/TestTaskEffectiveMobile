@@ -1,3 +1,4 @@
+// file: presentation/MainViewModel.kt
 package com.example.main.presentation
 
 import androidx.lifecycle.ViewModel
@@ -6,7 +7,10 @@ import com.example.main.domain.MainEffect
 import com.example.main.domain.MainEvent
 import com.example.main.domain.MainState
 import com.example.main.domain.model.Course
-import com.example.main.domain.repository.CourseRepository
+import com.example.main.domain.usecase.GetCoursesUseCase
+import com.example.main.domain.usecase.SearchCoursesUseCase
+import com.example.main.domain.usecase.SortCoursesUseCase
+import com.example.main.domain.usecase.ToggleFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +24,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: CourseRepository
+    private val getCoursesUseCase: GetCoursesUseCase,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
+    private val searchCoursesUseCase: SearchCoursesUseCase,
+    private val sortCoursesUseCase: SortCoursesUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState(isLoading = true))
@@ -36,17 +43,11 @@ class MainViewModel @Inject constructor(
     fun handleEvent(event: MainEvent) {
         when (event) {
             is MainEvent.SearchQueryChanged -> {
-                _state.update { it.copy(searchQuery = event.query) }
-                performSearch(event.query)
+                updateSearchQuery(event.query)
             }
 
             MainEvent.ToggleSortOrder -> {
-                _state.update {
-                    it.copy(
-                        sortAscending = !it.sortAscending,
-                        filteredCourses = applySort(it.filteredCourses, !it.sortAscending)
-                    )
-                }
+                toggleSortOrder()
             }
 
             is MainEvent.CourseClicked -> {
@@ -69,61 +70,65 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun performSearch(query: String) {
-        val currentState = _state.value
+    private fun updateSearchQuery(query: String) {
+        _state.update { it.copy(searchQuery = query) }
 
-        val filtered = if (query.isEmpty()) {
-            currentState.courses
-        } else {
-            currentState.courses.filter { course ->
-                course.title.contains(query, ignoreCase = true) ||
-                        course.description.contains(query, ignoreCase = true)
-            }
-        }
+        val currentState = _state.value
+        val searchResult = searchCoursesUseCase(currentState.courses, query)
+        val sortedResult = sortCoursesUseCase(searchResult, currentState.sortAscending)
 
         _state.update {
-            it.copy(
-                filteredCourses = applySort(filtered, it.sortAscending)
-            )
+            it.copy(filteredCourses = sortedResult)
         }
     }
 
-    private fun applySort(courses: List<Course>, ascending: Boolean): List<Course> {
-        return if (ascending) {
-            courses.sortedBy { it.publishDate }
-        } else {
-            courses.sortedByDescending { it.publishDate }
+    private fun toggleSortOrder() {
+        _state.update { state ->
+            val newSortAscending = !state.sortAscending
+            val sortedCourses = sortCoursesUseCase(state.filteredCourses, newSortAscending)
+
+            state.copy(
+                sortAscending = newSortAscending,
+                filteredCourses = sortedCourses
+            )
         }
     }
 
     private fun toggleFavorite(courseId: Int) {
         viewModelScope.launch {
-            try {
-                repository.toggleFavorite(courseId)
+            val currentCourse = _state.value.courses.find { it.id == courseId }
 
-                _state.update { state ->
-                    val updatedCourses = state.courses.map { course ->
-                        if (course.id == courseId) {
-                            course.copy(isFavorite = !course.isFavorite)
-                        } else course
-                    }
+            if (currentCourse != null) {
+                updateCourseFavoriteStatus(courseId, !currentCourse.isFavorite)
 
-                    val updatedFiltered = state.filteredCourses.map { course ->
-                        if (course.id == courseId) {
-                            course.copy(isFavorite = !course.isFavorite)
-                        } else course
-                    }
-
-                    state.copy(
-                        courses = updatedCourses,
-                        filteredCourses = updatedFiltered
-                    )
-                }
-            } catch (e: Exception) {
-                viewModelScope.launch {
+                try {
+                    toggleFavoriteUseCase(courseId)
+                } catch (e: Exception) {
+                    updateCourseFavoriteStatus(courseId, currentCourse.isFavorite)
                     _effect.emit(MainEffect.ShowError("Ошибка при изменении избранного"))
                 }
             }
+        }
+    }
+
+    private fun updateCourseFavoriteStatus(courseId: Int, isFavorite: Boolean) {
+        _state.update { state ->
+            val updatedCourses = state.courses.map { course ->
+                if (course.id == courseId) {
+                    course.copy(isFavorite = isFavorite)
+                } else course
+            }
+
+            val updatedFiltered = state.filteredCourses.map { course ->
+                if (course.id == courseId) {
+                    course.copy(isFavorite = isFavorite)
+                } else course
+            }
+
+            state.copy(
+                courses = updatedCourses,
+                filteredCourses = updatedFiltered
+            )
         }
     }
 
@@ -132,12 +137,13 @@ class MainViewModel @Inject constructor(
             _state.update { it.copy(isLoading = true, error = null) }
 
             try {
-                val courses = repository.getCourses()
+                val courses = getCoursesUseCase()
+                val sortedCourses = sortCoursesUseCase(courses, _state.value.sortAscending)
 
                 _state.update {
                     it.copy(
                         courses = courses,
-                        filteredCourses = applySort(courses, it.sortAscending),
+                        filteredCourses = sortedCourses,
                         isLoading = false
                     )
                 }

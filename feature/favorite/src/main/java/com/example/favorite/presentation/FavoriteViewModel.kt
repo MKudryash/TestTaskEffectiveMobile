@@ -2,7 +2,8 @@ package com.example.favorite.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.favorite.domain.repository.FavoriteRepository
+import com.example.favorite.domain.usecase.GetFavoritesUseCase
+import com.example.favorite.domain.usecase.RemoveFromFavoriteUseCase
 import com.example.main.domain.model.Course
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -11,13 +12,16 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
-    private val favoriteRepository: FavoriteRepository
+    private val getFavoritesUseCase: GetFavoritesUseCase,
+    private val removeFromFavoriteUseCase: RemoveFromFavoriteUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(FavoriteState(isLoading = true))
@@ -48,10 +52,20 @@ class FavoriteViewModel @Inject constructor(
 
     private fun loadFavorites() {
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, error = null) }
-
-            try {
-                favoriteRepository.getFavorites().collect { favorites ->
+            getFavoritesUseCase()
+                .onStart {
+                    _state.update { it.copy(isLoading = true, error = null) }
+                }
+                .catch { e ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            error = "Ошибка загрузки избранного: ${e.message}"
+                        )
+                    }
+                    _effect.emit(FavoriteEffect.ShowError("Не удалось загрузить избранное"))
+                }
+                .collect { favorites ->
                     _state.update {
                         it.copy(
                             favoriteCourses = favorites,
@@ -59,22 +73,13 @@ class FavoriteViewModel @Inject constructor(
                         )
                     }
                 }
-            } catch (e: Exception) {
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        error = "Ошибка загрузки избранного: ${e.message}"
-                    )
-                }
-                _effect.emit(FavoriteEffect.ShowError("Не удалось загрузить избранное"))
-            }
         }
     }
 
     private fun removeFromFavorite(courseId: Int) {
         viewModelScope.launch {
             try {
-                favoriteRepository.removeFromFavorite(courseId)
+                removeFromFavoriteUseCase(courseId)
             } catch (e: Exception) {
                 _effect.emit(FavoriteEffect.ShowError("Ошибка при удалении из избранного"))
             }
