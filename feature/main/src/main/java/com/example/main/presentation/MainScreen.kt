@@ -12,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -20,6 +21,7 @@ import androidx.lifecycle.flowWithLifecycle
 import com.example.design.theme.AppColors
 import com.example.design.theme.LocalAppColors
 import com.example.design.theme.LocalAppDimensions
+import com.example.design.R
 import com.example.design.theme.LocalAppTypography
 import com.example.main.domain.MainEffect
 import com.example.main.domain.MainEvent
@@ -78,7 +80,7 @@ fun MainScreen(
         if (state.isLoading) {
             LoadingContent()
         } else if (state.error != null) {
-            ErrorContent(state.error ?: "Ошибка") { }
+            ErrorContent(state.error ?: stringResource(R.string.error)) { }
         } else {
             CoursesList(
                 courses = state.filteredCourses,

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ <string name="vk">Вконтакте</string>
+ <string name="ok">Одноклассники</string>
+ <string name="search">Search...</string>
+ <string name="moreDetails">Подробнее</string>
+ <string name="courseNotFount">Курсы не найдены</string>
+ <string name="repeat">Повторить</string>
+ <string name="sortDate">По дате добавления</string>
+ <string name="error">Ошибка</string>
+ <string name="settings">Настройки</string>
+ <string name="writeToSupport">Написать в поддержку</string>
+ <string name="logOut">Выйти из аккаунта</string>
+ <string name="yourCourses">Ваши курсы</string>
+ <string name="correctEmail">Введите корректный email адрес</string>
+ <string name="correctPassword">Пароль должен содержать минимум 6 символов</string>
+ <string name="labelPass">Пароль</string>
+ <string name="labelEmail">Email</string>
+ <string name="placeholderEmail">example@gmail.com</string>
+ <string name="signInBtn">Вход</string>
+ <string name="haveAcc">Нет аккаунта?</string>
+ <string name="labelSignUp">Регистрация</string>
+ <string name="labelForgotPass">Забыл пароль</string>
+ <string name="placeholderPass">Введите пароль</string>
+ <string name="author">Автор</string>
+ <string name="startCourse">Начать курс</string>
+ <string name="goPlatform">Перейти на платформу</string>
+ <string name="aboutCourse">О курсе</string>
+ <string name="share">Поделиться</string>
+ <string name="favorite">Поделиться</string>
+ <string name="errorLoad">Ошибка загрузки</string>
+ <string name="hotHaveFavoriteCourse">У вас пока нет избранных курсов</string>
+
+</resources>

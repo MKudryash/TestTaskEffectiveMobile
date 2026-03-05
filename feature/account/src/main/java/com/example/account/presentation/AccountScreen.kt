@@ -13,11 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.account.presentation.components.AccountAction
 import com.example.design.theme.LocalAppColors
+import com.example.design.R
 import com.example.design.theme.LocalAppDimensions
 import com.example.design.theme.LocalAppTypography
 
@@ -59,7 +61,7 @@ fun  AccountScreen () {
                 ) {
 
                     AccountAction(
-                        text = "Написать в поддержку",
+                        text = stringResource(R.string.writeToSupport),
                         onClick = {}
                     )
 
@@ -73,7 +75,7 @@ fun  AccountScreen () {
 
 
                     AccountAction(
-                        text = "Настройки",
+                        text = stringResource(R.string.settings),
                         onClick = {}
                     )
 
@@ -86,13 +88,13 @@ fun  AccountScreen () {
                     )
 
                     AccountAction(
-                        text = "Выйти из аккаунта",
+                        text = stringResource(R.string.logOut),
                         onClick = {}
                     )
                 }
             }
             Text(
-                text = "Ваши курсы",
+                text = stringResource(R.string.yourCourses),
                 color = colors.textPrimary,
                 modifier = Modifier
                     .fillMaxWidth()

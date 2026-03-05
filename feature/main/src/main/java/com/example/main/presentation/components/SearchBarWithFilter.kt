@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.design.R
 import com.example.design.components.button.IconButton
@@ -29,7 +30,7 @@ fun SearchBarWithFilter(
     onFilterClick: () -> Unit,
     onSearch: (() -> Unit)? = null,
     modifier: Modifier = Modifier.Companion,
-    placeholder: String = "Search courses..."
+    placeholder: String = stringResource(R.string.search)
 ) {
     val colors = LocalAppColors.current
     val dimensions = LocalAppDimensions.current

@@ -14,8 +14,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.stringResource
 import com.example.design.theme.LocalAppDimensions
 import com.example.design.theme.LocalAppShapes
+import com.example.design.R
 import java.nio.file.Files.size
 
 enum class SocialButtonType {
@@ -73,10 +75,10 @@ fun SocialButton(
         ) {
             Icon(
                 painter = icon,
-                contentDescription = when (type) {
-                    SocialButtonType.VK -> "ВКонтакте"
-                    SocialButtonType.OK -> "Одноклассники"
-                },
+                contentDescription = stringResource( when (type) {
+                    SocialButtonType.VK -> R.string.vk
+                    SocialButtonType.OK -> R.string.ok
+                }),
                 tint = Color.White
             )
         }

@@ -9,11 +9,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.example.design.components.card.CourseCard
 import com.example.design.theme.AppColors
 import com.example.design.theme.AppDimensions
 import com.example.design.theme.AppTypography
 import com.example.domain.model.Course
+import com.example.design.R
 
 @Composable
 fun CoursesList(
@@ -30,7 +32,7 @@ fun CoursesList(
             contentAlignment = Alignment.Companion.Center
         ) {
             Text(
-                text = "Курсы не найдены",
+                text = stringResource(R.string.courseNotFount),
                 style = typography.bodyMedium,
                 color = colors.textSecondary
             )

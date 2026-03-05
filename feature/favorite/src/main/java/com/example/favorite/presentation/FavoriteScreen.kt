@@ -13,6 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -21,6 +22,7 @@ import androidx.lifecycle.flowWithLifecycle
 import com.example.design.theme.LocalAppColors
 import com.example.design.theme.LocalAppDimensions
 import com.example.design.theme.LocalAppTypography
+import com.example.design.R
 import com.example.favorite.presentation.components.ErrorContent
 import com.example.main.presentation.components.CoursesList
 
@@ -56,7 +58,7 @@ fun FavoriteScreen(
             .padding(top = 56.dp, start = dimensions.spacingLarge, end = dimensions.spacingLarge)
     ) {
         Text(
-            text = "Избранное",
+            text = stringResource(R.string.favorite),
             style = typography.displayMedium,
             color = colors.textPrimary,
             modifier = Modifier.padding(bottom = dimensions.spacingLarge)
@@ -70,7 +72,7 @@ fun FavoriteScreen(
                 CircularProgressIndicator()
             }
         } else if (state.error != null) {
-            ErrorContent(error = state.error ?: "Ошибка загрузки", {})
+            ErrorContent(error = state.error ?: stringResource(R.string.errorLoad), {})
 
         } else if (state.favoriteCourses.isEmpty()) {
             Box(
@@ -78,7 +80,7 @@ fun FavoriteScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "У вас пока нет избранных курсов",
+                    text = stringResource(R.string.hotHaveFavoriteCourse),
                     style = typography.bodyMedium,
                     color = colors.textSecondary
                 )

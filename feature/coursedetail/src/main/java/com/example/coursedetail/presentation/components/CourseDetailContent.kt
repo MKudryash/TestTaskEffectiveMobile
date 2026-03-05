@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -93,7 +94,7 @@ fun CourseDetailContent(course: Course, onNavigateBack: () -> Unit,
                         }
                         Column {
                             Text(
-                                "Автор",
+                                stringResource(R.string.author),
                                 style = typography.bodySmall.copy(
                                     color =  colors.textSecondary,
                                     fontWeight = FontWeight.Normal
@@ -113,18 +114,18 @@ fun CourseDetailContent(course: Course, onNavigateBack: () -> Unit,
 
 
                     AppButton(
-                        text = "Начать курс",
+                        text = stringResource(R.string.startCourse),
                         onClick = {},
                         )
                     Spacer(Modifier.height(dimensions.spacingMedium))
                     AppButton(
-                        text = "Перейти на платформу",
+                        text = stringResource(R.string.goPlatform),
                         onClick = {},
                         containerColor = colors.textFieldBackground
                         )
 
                     Text(
-                        text = "О курсе",
+                        text = stringResource(R.string.aboutCourse),
                         color = colors.textPrimary,
                         modifier = Modifier
                             .fillMaxWidth()

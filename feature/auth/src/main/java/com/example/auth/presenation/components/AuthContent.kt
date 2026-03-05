@@ -19,11 +19,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.auth.presenation.screen.isValidEmail
 import com.example.auth.presenation.viewmodel.AuthViewModel
 import com.example.design.components.button.AppButton
+import com.example.design.R
 import com.example.design.components.feedback.ErrorMessage
 import com.example.design.components.input.AppTextField
 import com.example.design.theme.LocalAppColors
@@ -57,7 +59,7 @@ fun AuthContent(
             verticalArrangement = Arrangement.spacedBy(dimensions.spacingLarge)
         ) {
             Text(
-                text = "Вход",
+                text = stringResource(R.string.signInBtn),
                 color = colors.textPrimary,
                 modifier = Modifier.Companion
                     .fillMaxWidth()
@@ -73,14 +75,14 @@ fun AuthContent(
                     email = it
                     isEmailValid = isValidEmail(it)
                 },
-                label = "Email",
-                placeholder = "example@gmail.com",
+                label = stringResource(R.string.labelEmail),
+                placeholder = stringResource(R.string.placeholderEmail),
                 isEmail = true,
                 modifier = Modifier.Companion.fillMaxWidth()
             )
 
             if (!isEmailValid && email.isNotEmpty()) {
-                ErrorMessage(text = "Введите корректный email адрес")
+                ErrorMessage(text = stringResource(R.string.correctEmail))
             }
 
 
@@ -90,14 +92,14 @@ fun AuthContent(
                     password = it
                     isPasswordValid = it.length >= 6
                 },
-                label = "Пароль",
-                placeholder = "Введите пароль",
+                label = stringResource(R.string.labelPass),
+                placeholder = stringResource(R.string.placeholderPass),
                 isPassword = true,
                 modifier = Modifier.Companion.fillMaxWidth()
             )
 
             if (!isPasswordValid && password.isNotEmpty()) {
-                ErrorMessage(text = "Пароль должен содержать минимум 6 символов")
+                ErrorMessage(text = stringResource(R.string.correctPassword))
             }
 
 
@@ -105,7 +107,7 @@ fun AuthContent(
 
 
             AppButton(
-                text = "Вход",
+                text = stringResource(R.string.signInBtn),
                 onClick = {
                     if (isValidEmail(email) && password.length >= 6) {
                         onLoginClick(email, password)
@@ -124,13 +126,13 @@ fun AuthContent(
                 verticalAlignment = Alignment.Companion.CenterVertically
             ) {
                 Text(
-                    text = "Нету аккаунта? ",
+                    text = stringResource(R.string.haveAcc),
                     color = colors.textPrimary,
                     style = typography.bodySmall
                 )
 
                 Text(
-                    text = "Регистрация",
+                    text = stringResource(R.string.labelSignUp),
                     color = colors.primary,
                     style = typography.bodySmall,
                     modifier = Modifier.Companion.clickable { }
@@ -138,7 +140,7 @@ fun AuthContent(
             }
 
             Text(
-                text = "Забыл пароль",
+                text = stringResource(R.string.labelForgotPass),
                 color = colors.primary,
                 style = typography.bodySmall,
                 modifier = Modifier.Companion
